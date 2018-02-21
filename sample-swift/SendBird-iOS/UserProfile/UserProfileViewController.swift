@@ -229,7 +229,10 @@ class UserProfileViewController: UIViewController, UIImagePickerControllerDelega
         picker.dismiss(animated: true) { 
             if CFStringCompare(mediaType as CFString, kUTTypeImage, []) == CFComparisonResult.compareEqualTo {
                 let imagePath: URL = info[UIImagePickerControllerReferenceURL] as! URL
-                let asset: PHAsset = PHAsset.fetchAssets(withALAssetURLs: [imagePath], options: nil).lastObject!
+                guard let asset: PHAsset = PHAsset.fetchAssets(withALAssetURLs: [imagePath], options: nil).lastObject else {
+                    print("Tha app doesn't have the permission access to read the image")
+                    return
+                }
                 let options: PHImageRequestOptions = PHImageRequestOptions()
                 options.isSynchronous = true
                 options.isNetworkAccessAllowed = false

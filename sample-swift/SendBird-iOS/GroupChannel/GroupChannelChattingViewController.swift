@@ -1254,14 +1254,17 @@ class GroupChannelChattingViewController: UIViewController, SBDConnectionDelegat
                 let UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, ext as CFString, nil)?.takeRetainedValue()
                 let mimeType = UTTypeCopyPreferredTagWithClass(UTI!, kUTTagClassMIMEType)?.takeRetainedValue();
                 
-                let asset = PHAsset.fetchAssets(withALAssetURLs: [imagePath], options: nil).lastObject
+                guard let asset = PHAsset.fetchAssets(withALAssetURLs: [imagePath], options: nil).lastObject else {
+                    print("Tha app doesn't have the permission access to read the image")
+                    return
+                }
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
                 options.isNetworkAccessAllowed = false
                 options.deliveryMode = PHImageRequestOptionsDeliveryMode.highQualityFormat
 
                 if ((mimeType! as String) == "image/gif") {
-                    PHImageManager.default().requestImageData(for: asset!, options: options, resultHandler: { (imageData, dataUTI, orientation, info) in
+                    PHImageManager.default().requestImageData(for: asset, options: options, resultHandler: { (imageData, dataUTI, orientation, info) in
                         let isError = info?[PHImageErrorKey]
                         let isCloud = info?[PHImageResultIsInCloudKey]
                         if ((isError != nil && (isError as! Bool) == true)) || (isCloud != nil && (isCloud as! Bool) == true) || imageData == nil {
@@ -1322,7 +1325,7 @@ class GroupChannelChattingViewController: UIViewController, SBDConnectionDelegat
                     })
                 }
                 else {
-                    PHImageManager.default().requestImage(for: asset!, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.default, options: nil, resultHandler: { (result, info) in
+                    PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.default, options: nil, resultHandler: { (result, info) in
                         if (result != nil) {
                             // sucess, data is in imagedata
                             /***********************************/
