@@ -41,7 +41,9 @@ class CreateGroupChannelUserListViewController: UIViewController, UICollectionVi
         let leftCloseItem = UIBarButtonItem(image: UIImage(named: "btn_close"), style: UIBarButtonItemStyle.done, target: self, action: #selector(close))
         var rightNextItem: UIBarButtonItem?
         if self.userSelectionMode == 0 {
-            rightNextItem = UIBarButtonItem(title: Bundle.sbLocalizedStringForKey(key: "NextButton"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(nextStage))
+            
+            rightNextItem = UIBarButtonItem(title: Bundle.sbLocalizedStringForKey(key: "CreateButton"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(createChannel))
+            //rightNextItem = UIBarButtonItem(title: Bundle.sbLocalizedStringForKey(key: "NextButton"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(nextStage))
             rightNextItem?.setTitleTextAttributes([NSFontAttributeName : Constants.navigationBarButtonItemFont()], for: UIControlState.normal)
         }
         else {
@@ -90,6 +92,35 @@ class CreateGroupChannelUserListViewController: UIViewController, UICollectionVi
         vc.selectedUser = NSArray(array: self.selectedUsers) as! [SBDUser]
         vc.delegate = self
         self.present(vc, animated: false, completion: nil)
+    }
+    
+    @objc private func createChannel() {
+        
+        if self.selectedUsers.count == 0 {
+            return
+        }
+        
+        SBDGroupChannel.createChannel(with: self.selectedUsers, isDistinct: false) { (channel, error) in
+            if error != nil {
+                let vc = UIAlertController(title: Bundle.sbLocalizedStringForKey(key: "ErrorTitle"), message: error?.domain, preferredStyle: UIAlertControllerStyle.alert)
+                let closeAction = UIAlertAction(title: Bundle.sbLocalizedStringForKey(key: "CloseButton"), style: UIAlertActionStyle.cancel, handler: { (action) in
+                    
+                })
+                vc.addAction(closeAction)
+                DispatchQueue.main.async {
+                    self.present(vc, animated: true, completion: nil)
+                }
+                
+                
+                return
+            }
+            
+            guard channel != nil else {
+                return
+            }
+            
+            self.didFinishCreating(channel: channel!, vc: self)
+        }
     }
     
     @objc private func invite() {
