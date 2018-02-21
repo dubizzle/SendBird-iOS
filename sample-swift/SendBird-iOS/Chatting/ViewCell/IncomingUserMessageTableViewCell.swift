@@ -65,8 +65,11 @@ class IncomingUserMessageTableViewCell: UITableViewCell, TTTAttributedLabelDeleg
     func setModel(aMessage: SBDUserMessage) {
         self.message = aMessage
         
-        self.profileImageView.af_setImage(withURL: URL(string: (self.message.sender?.profileUrl!)!)!, placeholderImage: UIImage(named: "img_profile"))
-        
+        if self.message.sender?.profileUrl != nil && self.message.sender?.profileUrl?.isEmpty == false {
+            self.profileImageView.af_setImage(withURL: URL(string: (self.message.sender?.profileUrl!)!)!, placeholderImage: UIImage(named: "img_profile"))
+        } else {
+            self.profileImageView.image = UIImage(named: "img_profile")
+        }
         let profileImageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickProfileImage))
         self.profileImageView.isUserInteractionEnabled = true
         self.profileImageView.addGestureRecognizer(profileImageTapRecognizer)

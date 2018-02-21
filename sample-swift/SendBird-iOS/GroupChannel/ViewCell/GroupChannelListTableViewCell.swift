@@ -118,7 +118,11 @@ class GroupChannelListTableViewCell: UITableViewCell {
                 if member.userId == SBDMain.getCurrentUser()?.userId {
                     continue
                 }
-                self.coverImageView11.af_setImage(withURL: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                if member.profileUrl != nil && member.profileUrl?.isEmpty == false {
+                    self.coverImageView11.af_setImage(withURL: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                } else {
+                    self.coverImageView11.image = UIImage(named: "img_profile")
+                }
                 memberNames.append(member.nickname!)
             }
         }
