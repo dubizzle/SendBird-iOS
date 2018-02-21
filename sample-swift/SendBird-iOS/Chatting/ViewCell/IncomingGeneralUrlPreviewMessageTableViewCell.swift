@@ -12,6 +12,7 @@ import TTTAttributedLabel
 import Alamofire
 import AlamofireImage
 import FLAnimatedImage
+import SDWebImage
 
 class IncomingGeneralUrlPreviewMessageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
     
@@ -161,7 +162,7 @@ class IncomingGeneralUrlPreviewMessageTableViewCell: UITableViewCell, TTTAttribu
 //            self.previewDescriptionBottomMargin.constant = 10
 //        }
         
-        self.profileImageView.af_setImage(withURL: URL(string: (self.message.sender?.profileUrl)!)!, placeholderImage: UIImage(named: "img_profile"), filter: nil, progress: nil, progressQueue: DispatchQueue.main, imageTransition: UIImageView.ImageTransition.noTransition, runImageTransitionIfCached: true, completion: nil)
+        self.profileImageView.af_setImage(withURL: URL(string: (self.message.sender?.profileUrl)!)!, placeholderImage: UIImage(named: "img_profile"))
         
         let profileImageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickProfileImage))
         profileImageTapRecognizer.delegate = self

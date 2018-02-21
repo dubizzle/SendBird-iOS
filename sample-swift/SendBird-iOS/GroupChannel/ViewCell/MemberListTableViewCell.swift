@@ -9,6 +9,7 @@
 import UIKit
 import SendBirdSDK
 import AlamofireImage
+import SDWebImage
 
 class MemberListTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
@@ -40,7 +41,7 @@ class MemberListTableViewCell: UITableViewCell {
         self.user = aUser
         
         if self.user.profileUrl != nil {
-            self.profileImageView.af_setImage(withURL: URL(string: self.user.profileUrl!)!, placeholderImage:UIImage(named: "img_profile"))
+            self.profileImageView.sd_setImage(with: URL(string: self.user.profileUrl!)!, placeholderImage:UIImage(named: "img_profile"))
         }
         else {
             self.profileImageView.image = UIImage(named: "img_profile")

@@ -9,6 +9,7 @@
 import UIKit
 import SendBirdSDK
 import AlamofireImage
+import SDWebImage
 
 class IncomingFileMessageTableViewCell: UITableViewCell {
     weak var delegate: MessageDelegate?

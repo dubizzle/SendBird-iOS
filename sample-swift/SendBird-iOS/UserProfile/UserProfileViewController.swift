@@ -13,6 +13,7 @@ import Alamofire
 import AlamofireImage
 import Photos
 import MobileCoreServices
+import SDWebImage
 
 class UserProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, RSKImageCropViewControllerDelegate {
 
@@ -42,7 +43,12 @@ class UserProfileViewController: UIViewController, UIImagePickerControllerDelega
         self.navItem.rightBarButtonItems = [negativeRightSpacer, rightDisconnectItem]
         self.navItem.leftBarButtonItems = [negativeLeftSpacer, leftProfileItem]
         
-        self.profileImageView.af_setImage(withURL: URL(string: (SBDMain.getCurrentUser()?.profileUrl!)!)!)
+        //self.profileImageView.af_setImage(withURL: URL(string: (SBDMain.getCurrentUser()?.profileUrl!)!)!)
+        if let imageUrl = SBDMain.getCurrentUser()?.profileUrl {
+            self.profileImageView.sd_setImage(with: URL(string: imageUrl), placeholderImage: UIImage(named: "img_profile"))
+        }
+        
+
         
         self.profileImageData = nil
         

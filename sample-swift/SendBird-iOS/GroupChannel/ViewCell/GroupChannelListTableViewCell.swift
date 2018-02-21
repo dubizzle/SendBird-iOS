@@ -110,7 +110,7 @@ class GroupChannelListTableViewCell: UITableViewCell {
         if self.channel.memberCount == 1 {
             self.coverImageContainerForOne.isHidden = false
             let member = self.channel.members?[0] as! SBDUser
-            self.coverImageView11.af_setImage(withURL: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+            self.coverImageView11.sd_setImage(with: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
         }
         else if self.channel.memberCount == 2 {
             self.coverImageContainerForOne.isHidden = false
@@ -119,7 +119,7 @@ class GroupChannelListTableViewCell: UITableViewCell {
                     continue
                 }
                 if member.profileUrl != nil && member.profileUrl?.isEmpty == false {
-                    self.coverImageView11.af_setImage(withURL: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                    self.coverImageView11.sd_setImage(with: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
                 } else {
                     self.coverImageView11.image = UIImage(named: "img_profile")
                 }
@@ -141,7 +141,7 @@ class GroupChannelListTableViewCell: UITableViewCell {
             }
             
             for i in 0...memberExceptCurrentUser.count - 1 {
-                coverImages[i].af_setImage(withURL: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                coverImages[i].sd_setImage(with: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
             }
         }
         else if self.channel.memberCount == 4 {
@@ -159,7 +159,7 @@ class GroupChannelListTableViewCell: UITableViewCell {
             }
             
             for i in 0...memberExceptCurrentUser.count - 1 {
-                coverImages[i].af_setImage(withURL: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                coverImages[i].sd_setImage(with: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
             }
         }
         else if self.channel.memberCount > 4 {
@@ -183,7 +183,7 @@ class GroupChannelListTableViewCell: UITableViewCell {
             }
             
             for i in 0...memberExceptCurrentUser.count - 1 {
-                coverImages[i].af_setImage(withURL: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                coverImages[i].sd_setImage(with: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
             }
         }
         

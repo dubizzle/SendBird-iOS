@@ -10,6 +10,7 @@ import UIKit
 import SendBirdSDK
 import AlamofireImage
 import TTTAttributedLabel
+import SDWebImage
 
 class IncomingUserMessageTableViewCell: UITableViewCell, TTTAttributedLabelDelegate {
     weak var delegate: MessageDelegate?
@@ -66,7 +67,7 @@ class IncomingUserMessageTableViewCell: UITableViewCell, TTTAttributedLabelDeleg
         self.message = aMessage
         
         if self.message.sender?.profileUrl != nil && self.message.sender?.profileUrl?.isEmpty == false {
-            self.profileImageView.af_setImage(withURL: URL(string: (self.message.sender?.profileUrl!)!)!, placeholderImage: UIImage(named: "img_profile"))
+            self.profileImageView.sd_setImage(with: URL(string: (self.message.sender?.profileUrl!)!)!, placeholderImage: UIImage(named: "img_profile"))
         } else {
             self.profileImageView.image = UIImage(named: "img_profile")
         }
