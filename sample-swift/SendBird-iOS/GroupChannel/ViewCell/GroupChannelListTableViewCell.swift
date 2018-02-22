@@ -143,7 +143,11 @@ class GroupChannelListTableViewCell: UITableViewCell {
             }
             
             for i in 0...memberExceptCurrentUser.count - 1 {
-                coverImages[i].sd_setImage(with: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                if let profileUrl = memberExceptCurrentUser[i].profileUrl, let url = URL(string: profileUrl) {
+                    coverImages[i].sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
+                } else {
+                    coverImages[i].image = UIImage(named: "img_profile")
+                }
             }
         }
         else if self.channel.memberCount == 4 {
@@ -161,7 +165,11 @@ class GroupChannelListTableViewCell: UITableViewCell {
             }
             
             for i in 0...memberExceptCurrentUser.count - 1 {
-                coverImages[i].sd_setImage(with: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                if let profileUrl = memberExceptCurrentUser[i].profileUrl, let url = URL(string: profileUrl) {
+                    coverImages[i].sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
+                } else {
+                    coverImages[i].image = UIImage(named: "img_profile")
+                }
             }
         }
         else if self.channel.memberCount > 4 {
@@ -187,6 +195,8 @@ class GroupChannelListTableViewCell: UITableViewCell {
             for i in 0...memberExceptCurrentUser.count - 1 {
                 if let profileUrl = memberExceptCurrentUser[i].profileUrl, let url = URL(string: profileUrl) {
                     coverImages[i].sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
+                } else {
+                    coverImages[i].image = UIImage(named: "img_profile")
                 }
             }
         }

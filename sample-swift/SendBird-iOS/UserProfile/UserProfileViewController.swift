@@ -44,8 +44,10 @@ class UserProfileViewController: UIViewController, UIImagePickerControllerDelega
         self.navItem.leftBarButtonItems = [negativeLeftSpacer, leftProfileItem]
         
         //self.profileImageView.af_setImage(withURL: URL(string: (SBDMain.getCurrentUser()?.profileUrl!)!)!)
-        if let imageUrl = SBDMain.getCurrentUser()?.profileUrl {
-            self.profileImageView.sd_setImage(with: URL(string: imageUrl), placeholderImage: UIImage(named: "img_profile"))
+        if let imageUrl = SBDMain.getCurrentUser()?.profileUrl, let url = URL(string: imageUrl) {
+            self.profileImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
+        } else {
+            self.profileImageView.image = UIImage(named: "img_profile")
         }
         
 

@@ -66,8 +66,8 @@ class IncomingUserMessageTableViewCell: UITableViewCell, TTTAttributedLabelDeleg
     func setModel(aMessage: SBDUserMessage) {
         self.message = aMessage
         
-        if self.message.sender?.profileUrl != nil && self.message.sender?.profileUrl?.isEmpty == false {
-            self.profileImageView.sd_setImage(with: URL(string: (self.message.sender?.profileUrl!)!)!, placeholderImage: UIImage(named: "img_profile"))
+        if let profileUrl = self.message.sender?.profileUrl, let url = URL(string: profileUrl) {
+            self.profileImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
         } else {
             self.profileImageView.image = UIImage(named: "img_profile")
         }

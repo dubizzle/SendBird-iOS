@@ -52,7 +52,11 @@ class IncomingImageFileMessageTableViewCell: UITableViewCell {
     func setModel(aMessage: SBDFileMessage) {
         self.message = aMessage
         
-        self.profileImageView.sd_setImage(with: URL(string: (self.message.sender?.profileUrl!)!)!, placeholderImage: UIImage(named: "img_profile"))
+        if let profileUrl = self.message.sender?.profileUrl, let url = URL(string: profileUrl) {
+            self.profileImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
+        } else {
+            self.profileImageView.image = UIImage(named: "img_profile")
+        }
         
         let profileImageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickProfileImage))
         self.profileImageView.isUserInteractionEnabled = true
