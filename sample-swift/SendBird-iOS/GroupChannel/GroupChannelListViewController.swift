@@ -255,7 +255,7 @@ class GroupChannelListViewController: UIViewController, UITableViewDelegate, UIT
             hideButton.titleLabel?.font = Constants.hideButtonFont()
             leaveButton.titleLabel?.font = Constants.leaveButtonFont()
             
-            (cell as! GroupChannelListEditableTableViewCell).rightButtons = [leaveButton] // Hide the hide function: [hideButton, leaveButton]
+            (cell as! GroupChannelListEditableTableViewCell).rightButtons = [hideButton] // Hide the leave function: [hideButton, leaveButton]
             (cell as! GroupChannelListEditableTableViewCell).setModel(aChannel: self.channels[indexPath.row])
             (cell as! GroupChannelListEditableTableViewCell).delegate = self
         }
