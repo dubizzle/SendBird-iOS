@@ -110,7 +110,9 @@ class GroupChannelListTableViewCell: UITableViewCell {
         if self.channel.memberCount == 1 {
             self.coverImageContainerForOne.isHidden = false
             let member = self.channel.members?[0] as! SBDUser
-            self.coverImageView11.sd_setImage(with: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+            if let profileUrl = member.profileUrl, let url = URL(string: profileUrl) {
+                self.coverImageView11.sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
+            }
         }
         else if self.channel.memberCount == 2 {
             self.coverImageContainerForOne.isHidden = false
@@ -118,8 +120,8 @@ class GroupChannelListTableViewCell: UITableViewCell {
                 if member.userId == SBDMain.getCurrentUser()?.userId {
                     continue
                 }
-                if member.profileUrl != nil && member.profileUrl?.isEmpty == false {
-                    self.coverImageView11.sd_setImage(with: URL(string: member.profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                if let profileUrl = member.profileUrl, let url = URL(string: profileUrl) {
+                    self.coverImageView11.sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
                 } else {
                     self.coverImageView11.image = UIImage(named: "img_profile")
                 }
@@ -183,7 +185,9 @@ class GroupChannelListTableViewCell: UITableViewCell {
             }
             
             for i in 0...memberExceptCurrentUser.count - 1 {
-                coverImages[i].sd_setImage(with: URL(string: memberExceptCurrentUser[i].profileUrl!)!, placeholderImage: UIImage(named: "img_profile"))
+                if let profileUrl = memberExceptCurrentUser[i].profileUrl, let url = URL(string: profileUrl) {
+                    coverImages[i].sd_setImage(with: url, placeholderImage: UIImage(named: "img_profile"))
+                }
             }
         }
         
