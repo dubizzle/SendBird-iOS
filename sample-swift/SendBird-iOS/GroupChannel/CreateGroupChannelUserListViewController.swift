@@ -99,8 +99,16 @@ class CreateGroupChannelUserListViewController: UIViewController, UICollectionVi
         if self.selectedUsers.count == 0 {
             return
         }
+
+        let isDistinct = false
+        let userIds : [String] = self.selectedUsers.map { (user) -> String in
+            return user.userId
+        }
+        let customType = "ABCDEF"
         
-        SBDGroupChannel.createChannel(with: self.selectedUsers, isDistinct: false) { (channel, error) in
+        // (void)createChannelWithName:(NSString * _Nullable)name isDistinct:(BOOL)isDistinct userIds:(NSArray<NSString *> * _Nonnull)userIds coverUrl:(NSString * _Nullable)coverUrl data:(NSString * _Nullable)data customType:(NSString * _Nullable)customType completionHandler:(nonnull void (^)(SBDGroupChannel * _Nullable channel, SBDError * _Nullable error))completionHandler;
+        
+        SBDGroupChannel.createChannel(withName: nil, isDistinct: isDistinct, userIds: userIds, coverUrl: nil, data: nil, customType:customType) { (channel, error) in
             if error != nil {
                 let vc = UIAlertController(title: Bundle.sbLocalizedStringForKey(key: "ErrorTitle"), message: error?.domain, preferredStyle: UIAlertControllerStyle.alert)
                 let closeAction = UIAlertAction(title: Bundle.sbLocalizedStringForKey(key: "CloseButton"), style: UIAlertActionStyle.cancel, handler: { (action) in

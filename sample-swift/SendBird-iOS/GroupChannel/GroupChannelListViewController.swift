@@ -63,6 +63,66 @@ class GroupChannelListViewController: UIViewController, UITableViewDelegate, UIT
         self.firstLoading = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        let query = SBDGroupChannel.createMyGroupChannelListQuery()
+        //query?.setUserIdsExactFilter(["ivan@sheddapp.com"])
+        query?.setCustomTypesFilter(["ABCDEF"])
+        query?.loadNextPage(completionHandler: { (channels, error) in
+            
+            print(channels?.count)
+            
+            guard let chan = channels else { return }
+            chan.forEach({ (channel) in
+                print(channel.customType)
+            })
+            
+            /*
+            guard channels!.count == 2 else {
+                return
+            }
+            
+            let metadataKeys : [String] = ["postId"]
+            channels!.filter({ $0.customType == "123" })
+            
+            
+            channels!.forEach({ (channel) in
+                
+                
+                channel.getMetaData(withKeys: metadataKeys, completionHandler: { (metadata, error) in
+                    
+                    guard let postId = metadata?["postId"] as? String else {
+                        return
+                    }
+                    
+                    print(postId)
+                    
+                })
+            })
+             */
+
+            /*
+            
+            let channel0MetaData: [String:String] = [
+                "postId" : "ABC",
+            ]
+            
+            channels![0].createMetaData(channel0MetaData, completionHandler: { (metadata, error) in
+                print("channel 0 set")
+                
+                let channel1MetaData: [String:String] = [
+                    "postId" : "123",
+                    ]
+                channels![1].createMetaData(channel1MetaData, completionHandler: { (me, er) in
+                    print("channel 1 set")
+                })
+            })*/
+            
+        })
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Utils.dumpChannels(channels: self.channels)
