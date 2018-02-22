@@ -28,8 +28,8 @@ class SelectedUserListCollectionViewCell: UICollectionViewCell {
     func setModel(aUser: SBDUser) {
         self.user = aUser
         
-        if self.user.profileUrl != nil {
-            self.profileImageView.sd_setImage(with: URL(string: self.user.profileUrl!)!, placeholderImage:UIImage(named: "img_profile"))
+        if let profileUrl = self.user.profileUrl, let url = URL(string: profileUrl) {
+            self.profileImageView.sd_setImage(with: url, placeholderImage:UIImage(named: "img_profile"))
         }
         else {
             self.profileImageView.image = UIImage(named: "img_profile")
