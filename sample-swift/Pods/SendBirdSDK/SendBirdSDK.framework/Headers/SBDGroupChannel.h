@@ -16,6 +16,9 @@
 @class SBDMember;
 @class SBDGroupChannel;
 @class SBDGroupChannelListQuery;
+@class SBDGroupChannelParams;
+@class SBDGroupChannelMemberListQuery;
+@class SBDPublicGroupChannelListQuery;
 
 /**
  *  The `SBDGroupChannel` class represents a group channel which is a private chat. The user who wants to join the group channel has to be invited by another user who is already joined the channel. This class is derived from `SBDBaseChannel`. If the `SBDChannelDelegate` is added, the user will automatically receive all messages from the group channels where the user belongs after connection. The `SBDGroupChannel` provides the features of general messaging apps.
@@ -36,6 +39,18 @@
  *  Last message of the channel.
  */
 @property (strong, nonatomic, nullable) SBDBaseMessage *lastMessage;
+
+/**
+ *  Represents the channel is super channel or not.
+ *  NO by default.
+ */
+@property (nonatomic, setter=setSuper:) BOOL isSuper;
+
+/**
+ *  Represents the channel is public channel or private one.
+ *  NO by default.
+ */
+@property (nonatomic, setter=setPublic:) BOOL isPublic;
 
 /**
  *  Represents the channel is distinct or not.
@@ -96,11 +111,30 @@
 - (nullable instancetype)initWithDictionary:(NSDictionary * _Nonnull)dict;
 
 /**
+ Internal use only.
+ */
+- (nullable instancetype)initWithDictionary:(NSDictionary * _Nonnull)dict isDirty:(BOOL)isDirty;
+
+/**
  *  Creates a query for my group channel list.
  *
  *  @return SBDGroupChannelListQuery instance for the current user.
  */
 + (nullable SBDGroupChannelListQuery *)createMyGroupChannelListQuery;
+
+/**
+ *  Creates a query for public group channel list.
+ *
+ *  @return SBDPublicGroupChannelListQuery  The instance to query public group channels.
+ */
++ (nullable SBDPublicGroupChannelListQuery *)createPublicChannelListQuery;
+
+/**
+ *  Creates a query for members in group channel list.
+ *
+ *  @return SBDGroupChannelMemberListQuery  The instance of the members in group channel.
+ */
+- (nullable SBDGroupChannelMemberListQuery *)createMemberListQuery;
 
 /**
  *  Creates a group channel with user objects.
@@ -296,6 +330,14 @@
 + (void)createChannelWithName:(NSString * _Nullable)name isDistinct:(BOOL)isDistinct userIds:(NSArray<NSString *> * _Nonnull)userIds coverImageFilePath:(NSString * _Nonnull)coverImageFilePath data:(NSString * _Nullable)data customType:(NSString * _Nullable)customType progressHandler:(nullable void (^)(int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend))progressHandler completionHandler:(nonnull void (^)(SBDGroupChannel * _Nullable channel, SBDError * _Nullable error))completionHandler;
 
 /**
+ *  Create a group channel with `SBDGroupChannelParams` class.
+ *
+ *  @param params               The parameter instance of SBDGroupChannelParams what has properties to create group channel.
+ *  @param completionHandler    The handler block to execute. `channel` is the group channel instance which has the `userIds` as <span>members</span>.
+ */
++ (void)createChannelWithParams:(nonnull SBDGroupChannelParams *)params completionHandler:(nonnull void(^)(SBDGroupChannel * _Nullable channel, SBDError * _Nullable error))completionHandler;
+
+/**
  *  Updates a group channel with user IDs.
  *
  *  @param name              The name of group channel.
@@ -346,6 +388,14 @@
  *  @param completionHandler The handler block to execute. `channel` is the group channel instance which has the `userIds` as <span>members</span>.
  */
 - (void)updateChannelWithName:(NSString * _Nullable)name coverImage:(NSData * _Nullable)coverImage coverImageName:(NSString * _Nullable)coverImageName data:(NSString * _Nullable)data progressHandler:(nullable void (^)(int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend))progressHandler completionHandler:(nonnull void (^)(SBDGroupChannel * _Nullable channel, SBDError * _Nullable error))completionHandler;
+
+/**
+ *  Update a group channel with `SBDGroupChannelParams` class.
+ *
+ *  @param params               The parameter instance of SBDGroupChannelParams what has properties to update group channel.
+ *  @param completionHandler    The handler block to execute. `channel` is the group channel instance which has the `userIds` as <span>members</span>.
+ */
+- (void)updateChannelWithParams:(nonnull SBDGroupChannelParams *)params completionHandler:(nonnull void (^)(SBDGroupChannel * _Nullable channel, SBDError * _Nullable error))completionHandler;
 
 /**
  *  Gets a group channel instance with channel URL from server asynchronously.
@@ -424,7 +474,7 @@
  *
  *  @param completionHandler The handler block to execute.
  */
-+ (void)markAsReadAllWithCompletionHandler:(nullable void (^)(SBDError *_Nullable error))completionHandler;
++ (void)markAsReadAllWithCompletionHandler:(nullable void (^)(SBDError *_Nullable error))completionHandler DEPRECATED_ATTRIBUTE;
 
 /**
  *  Internal use only.
@@ -478,8 +528,10 @@
  *  @param user The user
  *
  *  @return the timestamp of the last seen at.
+ *
+ *  @deprecated in 3.0.86.
  */
-- (long long)getLastSeenAtByUser:(SBDUser * _Nonnull)user;
+- (long long)getLastSeenAtByUser:(SBDUser * _Nonnull)user DEPRECATED_ATTRIBUTE;
 
 /**
  *  Returns the timestamp of the last seen at the channel by user Id.
@@ -487,8 +539,10 @@
  *  @param userId The user Id.
  *
  *  @return the timestamp of the last seen at.
+ *
+ *  @deprecated in 3.0.86.
  */
-- (long long)getLastSeenAtByUserId:(NSString * _Nonnull)userId;
+- (long long)getLastSeenAtByUserId:(NSString * _Nonnull)userId DEPRECATED_ATTRIBUTE;
 
 /**
  *  Returns the <span>members</span> who read the message.
@@ -506,7 +560,7 @@
  *
  *  @return Members who don't read the message.
  */
-- (nullable NSArray<SBDMember *> *)getUnreadMemebersWithMessage:(SBDBaseMessage * _Nonnull)message;
+- (nullable NSArray<SBDMember *> *)getUnreadMembersWithMessage:(SBDBaseMessage * _Nonnull)message;
 
 /**
  *  Returns the read status.
@@ -694,5 +748,12 @@
  @param completionHandler The handler block to execute.
  */
 + (void)getChannelCountWithMemberStateFilter:(SBDMemberStateFilter)memberStateFilter completionHandler:(nullable void (^)(NSUInteger groupChannelCount, SBDError * _Nullable error))completionHandler;
+
+/**
+ *  Join a group channel
+ *
+ *  @param completionHandler    The handler block to execute.
+ */
+- (void)joinWithCompletionHandler:(nullable void(^)(SBDError * _Nullable error))completionHandler;
 
 @end

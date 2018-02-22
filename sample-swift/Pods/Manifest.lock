@@ -15,7 +15,7 @@ PODS:
   - SDWebImage (4.3.0):
     - SDWebImage/Core (= 4.3.0)
   - SDWebImage/Core (4.3.0)
-  - SendBirdSDK (3.0.73)
+  - SendBirdSDK (3.0.88)
   - TTTAttributedLabel (2.0.0)
 
 DEPENDENCIES:
@@ -25,7 +25,7 @@ DEPENDENCIES:
   - NYTPhotoViewer (~> 1.1.0)
   - RSKImageCropper
   - SDWebImage
-  - SendBirdSDK (~> 3.0)
+  - SendBirdSDK (= 3.0.88)
   - TTTAttributedLabel
 
 SPEC CHECKSUMS:
@@ -36,9 +36,9 @@ SPEC CHECKSUMS:
   NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
   RSKImageCropper: 356e36fc58c57c371b5d8b23d603936d6a73df6c
   SDWebImage: 6da6c8bca115addc4de8613362e1b15f66333825
-  SendBirdSDK: 4b94942fb38558c4e4856e588af9f3d9f4720e2c
+  SendBirdSDK: f24151194463712beee18c8b45c1b82bdf9b0a31
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
 
-PODFILE CHECKSUM: 9ac9c8245e82b9f4708602a05c203f45419a869e
+PODFILE CHECKSUM: c5becf8985f2337fe23190dad9c0b74643ecc082
 
 COCOAPODS: 1.3.1

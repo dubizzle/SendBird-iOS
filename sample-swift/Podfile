@@ -6,7 +6,7 @@ target 'SendBird-iOS' do
   use_frameworks!
 
   # Pods for SendBird-iOS
-  pod 'SendBirdSDK', '~> 3.0'
+  pod 'SendBirdSDK', '=3.0.88'
   pod 'SDWebImage'
   pod 'AlamofireImage'
   pod 'MGSwipeTableCell'

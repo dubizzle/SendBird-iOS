@@ -16,6 +16,7 @@
 #import "SBDTypes.h"
 #import "SBDUserListQuery.h"
 #import "SBDInternalTypes.h"
+#import "SBDFriendListQuery.h"
 
 /**
  Represents operation options.
@@ -90,9 +91,11 @@
  */
 @property (nonatomic, strong, readonly, nullable) NSMapTable<NSString *, id<SBDChannelDelegate>> *channelDelegatesDictionary;
 
-@property (nonatomic, strong, nullable) void (^backgroundSessionCompletionHandler)();
+@property (nonatomic, strong, readonly, nullable) NSMapTable<NSString *, id<SBDUserEventDelegate>> *userEventDelegatesDictionary;
 
-@property (strong, nonatomic, nonnull) NSMutableArray<void (^)()> *backgroundTaskBlock;
+@property (nonatomic, strong, nullable) void (^backgroundSessionCompletionHandler)(void);
+
+@property (strong, nonatomic, nonnull) NSMutableArray<void (^)(void)> *backgroundTaskBlock;
 
 @property (atomic) int URLSessionDidFinishEventsForBackgroundURLSession;
 
@@ -151,8 +154,18 @@
  *  Initializes `SBDMain` singleton instance with SendBird Application ID. The Application ID is on SendBird dashboard. This method has to be run first in order to user SendBird.
  *
  *  @param applicationId The Applicatin ID of SendBird. It can be founded on SendBird Dashboard.
+ *
+ *  @return If YES, the applicationId is set.
  */
-+ (void)initWithApplicationId:(NSString * _Nonnull)applicationId;
++ (BOOL)initWithApplicationId:(NSString * _Nonnull)applicationId;
+
+/**
+ *  Initialize `sharedContainerIdentifier` of NSURLSessionConfiguration to use background session. 
+ *  Important! If you use `App Extension` and use upload file message in extension, you MUST set thie field.
+ *
+ *  @param identifier   The identifier to set background session configuraion.
+ */
++ (void)setSharedContainerIdentifier:(nonnull NSString *)identifier;
 
 /**
  *  SendBird internal use only.
@@ -198,7 +211,7 @@
  *
  *  @param completionHandler The handler block to execute.
  */
-+ (void)disconnectWithCompletionHandler:(nullable void (^)())completionHandler;
++ (void)disconnectWithCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Adds the `SBDConnectionDelegate`.
@@ -538,5 +551,46 @@
  @param completionHandler The handler block to execute.
  */
 + (void)getChannelInvitationPreferenceAutoAcceptWithCompletionHandler:(nullable void (^)(BOOL autoAccept, SBDError * _Nullable error))completionHandler;
+
+#pragma mark - User Event
++ (void)addUserEventDelegate:(id<SBDUserEventDelegate> _Nonnull)delegate identifier:(NSString * _Nonnull)identifier;
+
++ (void)removeUserEventDelegateForIdentifier:(NSString * _Nonnull)identifier;
+
++ (void)removeAllUserEventDelegates;
+
+#pragma mark - Friend List
++ (nullable SBDFriendListQuery *)createFriendListQuery;
+
++ (void)addFriendsWithUserIds:(NSArray<NSString *> * _Nonnull)userIds completionHandler:(nullable void (^)(NSArray<SBDUser *> * _Nullable users, SBDError * _Nullable error))completionHandler;
+
++ (void)deleteFriendWithUserId:(NSString * _Nonnull)userId completionHandler:(nullable void (^)(SBDError * _Nullable error))completionHandler;
+
++ (void)deleteFriendsWithUserIds:(NSArray<NSString *> * _Nonnull)userIds completionHandler:(nullable void (^)(SBDError * _Nullable error))completionHandler;
+
++ (void)deleteFriendWithDiscovery:(NSString * _Nonnull)discoveryKey completionHandler:(nullable void (^)(SBDError * _Nullable error))completionHandler;
+
++ (void)deleteFriendsWithDiscoveries:(NSArray<NSString *> * _Nonnull)discoveryKeys completionHandler:(nullable void (^)(SBDError * _Nullable error))completionHandler;
+
++ (void)uploadFriendDiscoveries:(NSDictionary<NSString *, NSString *> * _Nonnull)discoveryKeyAndNames completionHandler:(nullable void (^)(SBDError * _Nullable error))completionHandler;
+
++ (void)getFriendChangeLogsByToken:(NSString * _Nullable)token completionHandler:(nullable void (^)(NSArray<SBDUser *> * _Nullable updatedUsers, NSArray<NSString *> * _Nullable deletedUserIds, BOOL hasMore, NSString * _Nullable token, SBDError * _Nullable error))completionHandler;
+
+#pragma mark - Channel List
+/**
+ *  Marks as read all group channels of the current user.
+ *
+ *  @param completionHandler The handler block to execute.
+ */
++ (void)markAsReadAllWithCompletionHandler:(nullable void (^)(SBDError *_Nullable error))completionHandler;
+
+/**
+ *  Marks as read some group channels of the current user.
+ *
+ *  @param channelUrls The array list with channel urls to be marked as read.
+ *  @param completionHandler The handler block to execute.
+ */
++ (void)markAsReadWithChannelUrls:(NSArray <NSString *> * _Nonnull)channelUrls completionHandler:(nullable void (^)(SBDError *_Nullable error))completionHandler;
+
 
 @end

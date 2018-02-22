@@ -19,8 +19,17 @@
  *  The order type for `SBDGroupChannelListQuery`.
  */
 typedef NS_ENUM(NSInteger, SBDGroupChannelListOrder) {
-    SBDGroupChannelListOrderChronological = 0,
-    SBDGroupChannelListOrderLatestLastMessage = 1,
+    SBDGroupChannelListOrderChronological           = 0,
+    SBDGroupChannelListOrderLatestLastMessage       = 1,
+    SBDGroupChannelListOrderChannelNameAlphabetical = 2,
+};
+
+/**
+ *  The order type for `SBDPublicGroupChannelListQuery`.
+ */
+typedef NS_ENUM(NSUInteger, SBDPublicGroupChannelListOrder) {
+    SBDPublicGroupChannelListOrderChronological           = 0,
+    SBDPublicGroupChannelListOrderChannelNameAlphabetical = 2,
 };
 
 /**
@@ -76,6 +85,7 @@ typedef NS_ENUM(NSInteger, SDBErrorCode) {
     SBDErrorRequestFailed = 800220,
     SBDErrorFileUploadCancelFailed = 800230,
     SBDErrorFileUploadCancelled = 800240,
+	SBDErrorFileUploadTimeout = 800250,
 };
 
 /**
@@ -171,12 +181,16 @@ typedef NS_ENUM(NSInteger, SBDMessageTypeFilter) {
 
  - SBDMemberStateFilterAll: All.
  - SBDMemberStateFilterJoinedOnly: Joined state only.
- - SBDMemberStateFilterInvitedOnly: Invited state only.
+ - SBDMemberStateFilterInvitedOnly: Invited state only. This contains SBDMemberStateFilterByFriend, SBDMemberStateFilterByNonFriend.
+ - SBDMemberStateFilterByFriend: Invited by friend state only.
+ - SBDMemberStateFilterByNonFriend: Invited by non-friend state only.
  */
 typedef NS_ENUM(NSInteger, SBDMemberStateFilter) {
-    SBDMemberStateFilterAll = 0,
-    SBDMemberStateFilterJoinedOnly = 1,
-    SBDMemberStateFilterInvitedOnly = 2,
+    SBDMemberStateFilterAll                 = 0,
+    SBDMemberStateFilterJoinedOnly          = 1,
+    SBDMemberStateFilterInvitedOnly         = 2,
+    SBDMemberStateFilterInvitedByFriend     = 3,
+    SBDMemberStatefilterInvitedByNonFriend  = 4
 };
 
 
@@ -189,6 +203,43 @@ typedef NS_ENUM(NSInteger, SBDMemberStateFilter) {
 typedef NS_ENUM(NSInteger, SBDMemberState) {
     SBDMemberStateJoined = 0,
     SBDMemberStateInvited = 1,
+};
+
+/**
+ *  Channel filter for super mode in group channels.
+ 
+ - SBDGroupChannelSuperChannelFilterAll        : By default. No filtering.
+ - SBDGroupChannelSuperChannelFilterSuper      : To filter super group channel.
+ - SBDGroupChannelSuperChannelFilterNonSuper   : To filter non-super group channel.
+ */
+typedef NS_ENUM(NSUInteger, SBDGroupChannelSuperChannelFilter) {
+    SBDGroupChannelSuperChannelFilterAll       = 0,
+    SBDGroupChannelSuperChannelFilterSuper     = 1,
+    SBDGroupChannelSuperChannelFilterNonSuper  = 2,
+};
+
+/**
+ *  Filter public group channel or private one in group channels.
+ 
+ - SBDGroupChannelPublicChannelFilterAll        : By default. No filtering.
+ - SBDGroupChannelPublicChannelFilterPublic     : To filter public group channel.
+ - SBDGroupChannelPublicChannelFilterPrivate    : To filter private group channel.
+ */
+typedef NS_ENUM(NSUInteger, SBDGroupChannelPublicChannelFilter) {
+    SBDGroupChannelPublicChannelFilterAll       = 0,
+    SBDGroupChannelPublicChannelFilterPublic    = 1,
+    SBDGroupChannelPublicChannelFilterPrivate   = 2,
+};
+
+/**
+ *  Filter my channels or all ones in public group channels.
+ 
+ - SBDPublicGroupChannelMembershipFilterAll       : By default. No filtering.
+ - SBDPublicGroupChannelMembershipFilterJoined    : To filter public group channel joined with me.
+ */
+typedef NS_ENUM(NSUInteger, SBDPublicGroupChannelMembershipFilter) {
+    SBDPublicGroupChannelMembershipFilterAll      = 0,
+    SBDPublicGroupChannelMembershipFilterJoined   = 1,
 };
 
 #endif /* SBDTypes_h */
